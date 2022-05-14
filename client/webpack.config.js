@@ -15,32 +15,36 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      new HtmlWebpackPlugin ({ template: './index.html', title: 'Progressive-Writeme-App' }),
-
-      // generate manifest.js
-      new WebpackPwaManifest({
-        fingerprints: false,
-        inject: true,
-        name: 'Progressive-Writeme-App',
-        short_name: 'PWA',
-        description: 'Just another text editor',
-        // background_color: '#ffffff',
-        // theme_color: '#ffffff',
-        crossorigin: 'use-credentials',
-        start_url: './',
-        publicPath: './',
-        icons: [
-          {
-            src: path.resolve('src/images/logo.png'),
-            sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-          },
-        ],
-      }),
-      // create use sw.js to create service worker with WebpackPwaManifest
-      new InjectManifest({ swSrc: './src-sw.js', swDest: 'src-sw.js' })
+      new HtmlWebpackPlugin ( // generate html and inject bundle.js
+        { template: './index.html', title: 'Progressive-Writeme-App' }
+      ),
+      new InjectManifest( // create use sw.js to create service worker with WebpackPwaManifest
+        { swSrc: './src-sw.js', swDest: 'src-sw.js' }
+      ),
+      new WebpackPwaManifest(
+        { // generate manifest.js
+          fingerprints: false,
+          inject: true,
+          name: 'Progressive-Writeme-App',
+          short_name: 'PWA',
+          description: 'Just another text editor',
+          // background_color: '#ffffff',
+          // theme_color: '#ffffff',
+          crossorigin: 'use-credentials',
+          start_url: './',
+          publicPath: './',
+          icons: [
+            {
+              src: path.resolve('src/images/logo.png'),
+              sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+              destination: path.join('assets', 'icons')
+            },
+          ],
+        }
+      ),
     ],
 
-    module: {
+    module: { // css loaders
       rules: [
         {
           test: /\.css$/i,
