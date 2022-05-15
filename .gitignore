@@ -102,7 +102,4 @@ dist
 
 # TernJS port file
 .tern-port
-
-# Custom
-instructions.md
-/Assets 
+ 
